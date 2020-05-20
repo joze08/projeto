@@ -13,7 +13,7 @@ const Loading = styled(ActivityIndicator)`
 `
 
 const Home = () => {
-  const [, { logout }] = useAuth()
+  const [{ logout }] = useAuth()
 
   return (
     <View>
