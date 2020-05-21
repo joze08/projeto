@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apicall = axios.create({
-  baseURL: 'http://localhost:3333'
+  baseURL: 'https://apiusuario.herokuapp.com'
 });
 
 export default apicall;
