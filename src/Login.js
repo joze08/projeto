@@ -63,7 +63,7 @@ export const Login = () => {
 
     onSubmit: async values => {
       try {
-        const { data } = await api.get(`/register`)
+        const { data } = await api.get("authenticate", {username, passaword})
         login(data)
       } catch (error) {
         setState('Login ou senha inválidos')
