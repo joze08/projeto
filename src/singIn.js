@@ -1,51 +1,93 @@
-import React from 'react';
+import * as React from 'react'
 import { useState } from 'react'
 import styled from 'styled-components'
 
-import {
-    View,
-    Text,
-    ActivityIndicator,
-    TextInput,
-    Image,
-    TouchableOpacity
-} from 'react-native';
-
 import api from './api';
 
-const Screen = styled(View)`
-  flex: 1;
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from 'react-native'
+ 
+ 
+const bnt = styled(TouchableOpacity)`
+ background: #43bc70;
+  padding: 12px;
+  border-radius: 5px;
   align-items: center;
-  justify-content: center;
-  flex-direction: row;
 `
 
 const Img = styled(Image)`
-  margin-bottom: 32px;
-  max-width: 300px;
+  margin-bottom: 24px;
+  max-width: 200px;
   align-self: center;
 `
-
-const LoginBox = styled(View)`
+ 
+const SignINBox = styled(View)`
   flex: 1;
   padding: 16px;
 `
-
-const Input = styled(TextInput)`
-  background: #ebebeb;
-  border-radius: 5px;
-  padding: 12px;
-  margin-bottom: 12px;
-`
-const Button = styled(TouchableOpacity)`
-  background: #43bc70;
-  padding: 12px;
-  border-radius: 5px;
-  align-items: center;
+ 
+const Text = styled(TextInput)`
+padding:32px;
+flex:0,5;
 `
 
-const ButtonText = styled(Text)`
-  color: #fff;
-`
+export const singIn = () => {
+
+  const [state, setState] = useState(false)
+  const formec = useFormik({
+    initialValues: {
+      username: 'test',
+      email: 'test',
+      password: 'test',
+    },
+
+    onSubmit: async value => {
+      try {
+        const { data } = await api.post("register", {username, email, password})
+      } catch (error) {
+        setState('erro401')
+      }
+    },
+  })
+
+  return(
+    <Screen>
+      <Img source={require('./logo.png')} resizeMode="contain"/>
+      
+      <SignINBox>
+        <Text
+                  name="username"
+                  placeholder="Digite seu usuario"
+                />
+        
+        <Text
+                name="e-mail"
+                placeholder="digite seu e-mail"
+        />
+        
+        <Text
+                  name="password"
+                  placeholder="Digite sua senha"
+                />
+      </SignINBox>
+        
+      <Button onPress={formec.handleSubmit}>
+        {formec.isSubmitting ? (
+                  <ActivityIndicator color="#FFF" />
+                ) : (
+                  <ButtonText onPress={formec} >Cadastrar</ButtonText>
+                )}
+      </Button>
+    </Screen>
+    )
+  }
+
+
 
 //eh aqui que a magica vai acontecer e onde a gente cadastra o cara

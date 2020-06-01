@@ -51,6 +51,22 @@ const ButtonText = styled(Text)`
   color: #fff;
 `
 
+
+/* SINGIN ROUTE
+
+testa se singIn eh true, se for 
+aparece a tela da pagina de cadastro,
+se não for ele so segue pro route
+
+*/
+const sRoute = () => {
+  if (cadastro === true) {
+    return <singIn />
+  }
+}
+
+//^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 export const Login = () => {
   const [state, setState] = useState(false)
   const [, { login }] = useAuth()
@@ -100,7 +116,10 @@ export const Login = () => {
             <ButtonText>Entrar</ButtonText>
           )}
         </Button>
+        <Button title="Cadastrar" onPress={cadastro=true} />
       </LoginBox>
     </Screen>
   )
 }
+
+

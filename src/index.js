@@ -21,25 +21,9 @@ const Home = () => {
     <View>
       <Text>Home</Text>
       <Button title="Sair" onPress={logout} />
-      <Button title="Cadastrar" onPress={singIn=true} />
     </View>
   )
 }
-
-/* SINGIN ROUTE
-
-testa se singIn eh true, se for 
-aparece a tela da pagina de cadastro,
-se não for ele so segue pro route
-
-*/
-const sRoute = () => {
-  if (singIn === true) {
-    return <singIn />
-  }
-}
-
-//^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 const Router = () => {
   const [store] = useStore()
