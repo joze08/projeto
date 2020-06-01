@@ -1,44 +1,10 @@
-import * as React from 'react'
-import { View, Text, ActivityIndicator, Button } from 'react-native'
-import styled from 'styled-components'
+import React from 'react';
 
-import { StoreProvider, useStore } from './store'
-import { useAuth } from './auth'
-
-import { Login } from './Login'
-import { singIn } from './singIn'
-
-const Loading = styled(ActivityIndicator)`
-  flex: 1;
-  color: #43bc70;
-`
-
-const Home = () => {
-  const [{ logout }] = useAuth();
-  const singIn = false;
-
-  return (
-    <View>
-      <Text>Home</Text>
-      <Button title="Sair" onPress={logout} />
-    </View>
-  )
-}
-
-const Router = () => {
-  const [store] = useStore()
-
-  if (!store.rehydrated) {
-    return <Loading />
-  }
-
-  return store.auth ? <Home /> : <Login />
-}
-
-
+import { StoreProvider } from './hook/store';
+import Router from './route';
 
 export const App = () => (
   <StoreProvider>
     <Router />
   </StoreProvider>
-)
+);
