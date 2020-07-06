@@ -1,40 +1,55 @@
 import React from 'react'
 import { useFormik } from 'formik'
-import { Alert, ActivityIndicator } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { Screen, Img, LoginBox, Input, Button, ButtonText } from './styles'
-import { useAuth } from '../../hook/auth'
 
-const Login = () => {
-  const { login } = useAuth()
+import api from '../../services/api'
+
+import { ActivityIndicator, Alert } from 'react-native'
+
+import { Button, Screen, Img, SignUpBox, Input, ButtonText } from './styles'
+
+const SignUp = () => {
   const navigation = useNavigation()
-
   const formik = useFormik({
     initialValues: {
+      username: '',
       email: '',
       password: '',
     },
-    onSubmit: async ({ email, password }) => {
+    onSubmit: async ({ username, email, password }) => {
       try {
-        await login({ email, password })
+        await api.post('register', {
+          username,
+          email,
+          password,
+        })
+        navigation.navigate('Login')
       } catch (error) {
         console.log(error)
-        Alert.alert('Erro', 'Login ou senha inválidos!')
+        Alert.alert('Erro', 'Username ou E-mail já cadastrado!')
       }
     },
   })
 
   return (
     <Screen>
-      <LoginBox>
+      <SignUpBox>
         <Img source={require('../../logo.png')} resizeMode="contain" />
+
+        <Input
+          name="username"
+          placeholder="Digite seu usuario"
+          value={formik.values.username}
+          onChangeText={formik.handleChange('username')}
+          returnKeyType="next"
+        />
 
         <Input
           autoCorrect={false}
           autoCapitalize="none"
           keyboardType="email-address"
-          name="email"
-          placeholder="email@email.com"
+          name="e-mail"
+          placeholder="digite seu e-mail"
           value={formik.values.email}
           onChangeText={formik.handleChange('email')}
           returnKeyType="next"
@@ -56,15 +71,15 @@ const Login = () => {
           {formik.isSubmitting ? (
             <ActivityIndicator color="#FFF" />
           ) : (
-            <ButtonText>Entrar</ButtonText>
+            <ButtonText>Cadastrar</ButtonText>
           )}
         </Button>
-        <Button title="Cadastrar" onPress={() => navigation.navigate('SignUp')}>
-          <ButtonText>Cadastrar</ButtonText>
+        <Button title="Login" onPress={() => navigation.navigate('Login')}>
+          <ButtonText>Login</ButtonText>
         </Button>
-      </LoginBox>
+      </SignUpBox>
     </Screen>
   )
 }
-
-export default Login
+export default SignUp
+//eh aqui que a magica vai acontecer e onde a gente cadastra o cara

@@ -1,10 +1,19 @@
-import React from 'react';
+import 'react-native-gesture-handler'
+import React from 'react'
+import { View, StatusBar } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native'
+import AppProvider from './hook'
+import Routes from './routes'
 
-import { StoreProvider } from './hook/store';
-import Router from './route';
+const App = () => (
+  <NavigationContainer>
+    <StatusBar />
+    <AppProvider>
+      <View style={{ flex: 1 }}>
+        <Routes />
+      </View>
+    </AppProvider>
+  </NavigationContainer>
+)
 
-export const App = () => (
-  <StoreProvider>
-    <Router />
-  </StoreProvider>
-);
+export default App

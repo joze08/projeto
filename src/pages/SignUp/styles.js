@@ -1,4 +1,5 @@
 import styled from 'styled-components/native'
+
 import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'
 
 export const Screen = styled(View)`
@@ -14,7 +15,7 @@ export const Img = styled(Image)`
   align-self: center;
 `
 
-export const LoginBox = styled(View)`
+export const SignUpBox = styled(View)`
   flex: 1;
   padding: 6px;
 `

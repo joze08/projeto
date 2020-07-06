@@ -1,16 +1,16 @@
-import { View, Text, Button } from 'react-native';
-import { useAuth } from '../../hook/auth';
+import React from 'react'
+import { SafeAreaView, Text, Button } from 'react-native'
+import { useAuth } from '../../hook/auth'
 
 const Home = () => {
-  const [{ logout }] = useAuth();
-  const singIn = false;
+  const { logout } = useAuth()
 
   return (
-    <View>
+    <SafeAreaView>
       <Text>Home</Text>
       <Button title="Sair" onPress={logout} />
-    </View>
-  );
-};
+    </SafeAreaView>
+  )
+}
 
-export default Home;
+export default Home

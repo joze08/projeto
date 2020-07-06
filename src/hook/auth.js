@@ -1,11 +1,59 @@
-import { useCallback } from 'react'
-import { useStore } from './store'
+import React, {
+  createContext,
+  useCallback,
+  useState,
+  useContext,
+  useEffect,
+} from 'react'
+import AsyncStorage from '@react-native-community/async-storage'
+import api from '../services/api'
 
-export const useAuth = () => {
-  const [store, setStore] = useStore()
+const AuthContext = createContext()
 
-  const login = useCallback(auth => setStore(prev => ({ ...prev, auth })), [])
-  const logout = useCallback(() => setStore(({ auth, ...prev }) => prev), [])
+const AuthProvider = ({ children }) => {
+  const [auth, setAuth] = useState()
 
-  return [store && store.auth, { login, logout }]
+  useEffect(() => {
+    async function loadStorageData() {
+      const token = await AsyncStorage.getItem('@BIC:token')
+      if (token) {
+        api.defaults.headers.Authorization = `Bearer ${token}`
+        setAuth({ token })
+      }
+    }
+    loadStorageData()
+  }, [])
+
+  const login = useCallback(
+    async ({ email, password }) => {
+      const response = await api.post('authenticate', { email, password })
+      const { token } = response.data
+      api.defaults.headers.Authorization = `Bearer ${token}`
+      await AsyncStorage.setItem('@BIC:token', token)
+
+      setAuth({ token })
+    },
+    [AsyncStorage]
+  )
+
+  const logout = useCallback(async () => {
+    await AsyncStorage.removeItem('@BIC:token')
+    setAuth()
+  }, [AsyncStorage])
+
+  return (
+    <AuthContext.Provider value={{ auth, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
+
+function useAuth() {
+  const context = useContext(AuthContext)
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider')
+  }
+  return context
+}
+
+export { AuthProvider, useAuth }
